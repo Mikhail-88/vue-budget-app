@@ -1,6 +1,10 @@
 # vue-budget-app
 
-## Project setup
+- [DEMO-LINK](https://mikhail-88.github.io/vue-budget-app/dist/)
+
+This is a simple application to calculate your budget, used Vue.js framework and Element-ui library.
+
+## Project setupel
 ```
 npm install
 ```
