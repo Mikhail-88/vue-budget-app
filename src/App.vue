@@ -1,17 +1,70 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <DialogConfirm
+      :dialogData="dialogData" 
+      @closeDialog="toggleDialog" 
+      @removeItem="removeItemFromList"
+    />
+    <Form @submitForm="onFormSubmit" />
+    <TotalBalance :list="list" />
+    <BudgetList :list="list" @deleteItem="onDeleteItem" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BudgetList from '@/components/BudgetList';
+import TotalBalance from '@/components/TotalBalance';
+import Form from '@/components/Form';
+import DialogConfirm from '@/components/DialogConfirm';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+   BudgetList,
+   TotalBalance,
+   Form,
+   DialogConfirm
+  },
+  data: () => ({
+    list: {
+      1: {
+        type: 'INCOME',
+        value: 2000,
+        comment: 'salary',
+        id: 1
+      },
+      2: {
+        type: 'OUTCOME',
+        value: 1000,
+        comment: 'purchases',
+        id: 2
+      },
+    },
+    dialogData: {
+      isShow: false,
+      listItem: {}
+    }
+  }),
+  methods: {
+    toggleDialog() {
+      this.dialogData.isShow = !this.dialogData.isShow;
+    },
+    onDeleteItem(id) {
+      this.toggleDialog();
+      this.dialogData.listItem = this.list[id];
+    },
+    removeItemFromList(item) {
+      this.$delete(this.list, item.id)
+      this.toggleDialog();
+    },
+    onFormSubmit(formData) {
+      const newListItem = {
+        ...formData,
+        id: Date.now().toString()
+      };
+
+      this.$set(this.list, newListItem.id, newListItem);
+    }
   }
 }
 </script>
